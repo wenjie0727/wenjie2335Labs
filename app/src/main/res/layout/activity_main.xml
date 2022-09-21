@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <TextView
 
@@ -20,6 +20,38 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="50px"
         android:text="@string/button_message" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Do you drink Coffee?" />
+
+    <RadioButton
+        android:id="@+id/radioButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Do you drink Coffee?" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Do you drink Coffee?" />
+
+    <ImageView
+        android:id="@+id/imageview"
+        android:src="@drawable/logo_algonquin"
+        android:layout_width="200px"
+        android:layout_height="200px"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_algonquin"
+        android:id="@+id/myimagebutton"
+        />
+
     <EditText
         android:id="@+id/myedittext"
         android:layout_width="wrap_content"
