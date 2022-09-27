@@ -1,5 +1,6 @@
 package algonquin.cst2335.jian0076.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         model.editString.observe(this, s -> {
-            variableBinding.textview.setText("Your edit text has "+ s );
+            mytext.setText("Your edit text has "+ s );
         });
 
 
@@ -44,20 +45,27 @@ public class MainActivity extends AppCompatActivity {
             variableBinding.checkBox.setChecked(isChecked);
             variableBinding.radioButton.setChecked(isChecked);
             variableBinding.switch1.setChecked(isChecked);
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "The value is now:" + isChecked;
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
         }
         );
         variableBinding.checkBox.setOnCheckedChangeListener( (button, isChecked) -> {
             model.isSelected.postValue(isChecked);
-            Toast.makeText(getApplicationContext(), "You clicked on the " +  "checkbox" + " and it is now: " + isChecked,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "You clicked on the " +  "checkbox" + " and it is now: " + isChecked,Toast.LENGTH_SHORT).show();
 
         } );
         variableBinding.radioButton.setOnCheckedChangeListener( (button, isChecked) -> {
             model.isSelected.postValue(isChecked);
-            Toast.makeText(getApplicationContext(), "You clicked on the " +  "radiobutton" + " and it is now: " + isChecked,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "You clicked on the " +  "radiobutton" + " and it is now: " + isChecked,Toast.LENGTH_SHORT).show();
         } );
         variableBinding.switch1.setOnCheckedChangeListener( (button, isChecked) -> {
             model.isSelected.postValue(isChecked);
-            Toast.makeText(getApplicationContext(), "You clicked on the " +  "switch" + " and it is now: " + isChecked,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "You clicked on the " +  "switch" + " and it is now: " + isChecked,Toast.LENGTH_SHORT).show();
         } );
 
         variableBinding.myimagebutton.setOnClickListener(click -> {
