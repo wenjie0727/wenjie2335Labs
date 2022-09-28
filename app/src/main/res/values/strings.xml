@@ -1,9 +1,7 @@
 <resources>
   <string name="app_name">Wenjies Android Labs</string>
   <string name="spin_message">spin flag</string>
-  <string name="button3">按钮3  </string>
-  <string name="button2">按钮2</string>
-  <string name="button" > 按钮1   </string>
-
-
+  <string name="button3">  button</string>
+  <string name="button2">button</string>
+  <string name="button" > button </string>
 </resources>
