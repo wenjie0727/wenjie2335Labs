@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">wenjie\'s Android Labs</string>
-    <string name="hello_message">Hello World!</string>
-    <string name="button_message">I\'m a button</string>
+    <string name="message1">Enter your email address:</string>
+    <string name="message2">Type email here</string>
+    <string name="message3">Type your password</string>
+
 </resources>
