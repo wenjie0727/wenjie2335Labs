@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">wenjie\'s Android Labs</string>
     <string name="message1">Enter your email address:</string>
-    <string name="message2">Type email here</string>
-    <string name="message3">Type your password</string>
+    <string name="message2">Type Your Password</string>
+<!--    <string name="message3">Type your password</string>-->
 
 </resources>
