@@ -20,8 +20,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("Mydata", Context.MODE_PRIVATE);
         String emailAddress = prefs.getString("Email","");
 
+
+
         binding =ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.emailAddress.setText(emailAddress);
 
         //binding.emailAddress.setText(emailAddress);
         binding.button4.setOnClickListener(click ->

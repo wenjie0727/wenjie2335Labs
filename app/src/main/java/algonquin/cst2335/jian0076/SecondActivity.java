@@ -3,6 +3,7 @@ package algonquin.cst2335.jian0076;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -32,18 +33,23 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         File file = new File(getFilesDir(), "Picture.png");
         if (file.exists()) {
-            String path = file.getAbsolutePath();
-            Bitmap thumbnail = BitmapFactory.decodeFile(path +"/Picture.png");
+            Bitmap thumbnail = BitmapFactory.decodeFile(getFilesDir() + "/"+"Picture.png");
             binding.profileImage.setImageBitmap(thumbnail);
         }
         Intent fromPrevious = getIntent();
         String emailAddress = fromPrevious.getStringExtra("EmailAddress");
         binding.textView3.setText("Welcome " + emailAddress);
 
+        SharedPreferences prefs = getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+        String phone = prefs.getString("tel","");
+        binding.editTextPhone.setText(phone);
+
         binding.button.setOnClickListener(click -> {
             Intent call = new Intent(Intent.ACTION_DIAL);
             String phoneNumber = binding.editTextPhone.getText().toString();
             call.setData(Uri.parse("tel:" + phoneNumber));
+
+            prefs.edit().putString("tel", binding.editTextPhone.getText().toString()).commit();
             startActivity(call);
         })
         ;
