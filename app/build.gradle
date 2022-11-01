@@ -1,12 +1,13 @@
 plugins {
     id 'com.android.application'
 }
-buildFeatures {
-    dataBinding true
-}
+
 
 android {
     compileSdk 32
+    buildFeatures {
+        viewBinding true
+    }
 
     defaultConfig {
         applicationId "algonquin.cst2335.jian0076"
