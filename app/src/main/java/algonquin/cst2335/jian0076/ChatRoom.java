@@ -46,7 +46,7 @@ private RecyclerView.Adapter myAdapter;
         binding.recyclerView.setAdapter(myAdapter=new RecyclerView.Adapter<MyRowHolder>() {
             @NonNull
             @Override
-
+            // given the view type, just load a MyRowHolder
             public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 SentMessageBinding binding = SentMessageBinding.inflate(getLayoutInflater());
                 return new MyRowHolder(binding.getRoot());
