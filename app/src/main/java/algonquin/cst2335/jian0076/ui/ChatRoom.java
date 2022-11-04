@@ -18,73 +18,128 @@ import java.util.Date;
 import algonquin.cst2335.jian0076.R;
 import algonquin.cst2335.jian0076.data.ChatRoomViewModel;
 import algonquin.cst2335.jian0076.databinding.ActivityChatRoomBinding;
-import algonquin.cst2335.jian0076.databinding.SentMessageBinding;
+
+ class ChatMessage {
+    String message;
+    String timeSent;
+    boolean isSentButton;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getTimeSent() {
+        return timeSent;
+    }
+
+    public boolean isSentButton() {
+        return isSentButton;
+    }
+
+    ChatMessage(String m, String t, boolean sent)
+    {
+        message = m;
+        timeSent =t;
+        isSentButton = sent;
+
+    }
+}
 
 public class ChatRoom extends AppCompatActivity {
-ActivityChatRoomBinding binding;
-//ArrayList<String> messages = new ArrayList<>();
-ChatRoomViewModel chatModel messages = new ArrayList<>();
-    //ArrayList<ChatRoomViewModel> chatModel= new ArrayList<>();
-//ChatRoomViewModel chatModel;
-RecyclerView.Adapter myAdapter;
+    ActivityChatRoomBinding binding;
+    ChatRoomViewModel chatModel;
+    ArrayList<String> messages;
+    ArrayList<ChatMessage> list = new ArrayList<>();
+    //RecyclerView.Adapter myAdapter;
+    RecyclerView.Adapter<MyRowHolder> myAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         chatModel = new ViewModelProvider(this).get(ChatRoomViewModel.class);
         messages = chatModel.messages.getValue();
 
-        if(messages == null)
-        {
-            chatModel.messages.postValue( messages = new ArrayList<String>());
+        if (messages == null) {
+            chatModel.messages.postValue(messages = new ArrayList<>());
         }
 
-        binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-//
-//        binding.button.setOnClickListener(click ->{
-//            messages.add(binding.textInput.getText().toString());
-//            myAdapter.notifyItemInserted(messages.size()-1);
-//            //clear the previous text:
-//            binding.textInput.setText("");
-//
-//        });
 
-        binding.button.setOnClickListener(click ->{
+        binding.button.setOnClickListener(click -> {
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
             String currentDateandTime = sdf.format(new Date());
-            messages.add(binding.textInput.getText().toString());
-            myAdapter.notifyItemInserted(messages.size()-1);
+
+            String m = binding.textInput.getText().toString();
+            ChatMessage newMsg = new ChatMessage(m, currentDateandTime, false);
+            list.add(newMsg);
+
+            // messages.add(binding.textInput.getText().toString());
+            //wants to know which position has changed
+            myAdapter.notifyItemInserted(messages.size() - 1);
+            //clear the previous text:
+            binding.textInput.setText("");
+
+        });
+
+        binding.button1.setOnClickListener(click -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
+            String currentDateandTime = sdf.format(new Date());
+
+            String m = binding.textInput.getText().toString();
+            ChatMessage newMsg = new ChatMessage(m, currentDateandTime, true);
+            list.add(newMsg);
+
+            // messages.add(binding.textInput.getText().toString());
+            myAdapter.notifyItemInserted(messages.size() - 1);
             //clear the previous text:
             binding.textInput.setText("");
 
         });
 
         class MyRowHolder extends RecyclerView.ViewHolder {
+            //public BreakIterator currentDateandTime;
             TextView messageText;
             TextView timeText;
+
             public MyRowHolder(@NonNull View itemView) {
                 super(itemView);
-               messageText = itemView.findViewById(R.id.messageText);
-               timeText = itemView.findViewById(R.id.timeText);
+                messageText = itemView.findViewById(R.id.messageText);
+                timeText = itemView.findViewById(R.id.timeText);
             }
         }
-        binding.recyclerView.setAdapter(myAdapter=new RecyclerView.Adapter<MyRowHolder>() {
+        binding.recyclerView.setAdapter(myAdapter = new RecyclerView.Adapter<MyRowHolder>() {
             @NonNull
             @Override
-            // given the view type, just load a MyRowHolder
+            // given the view type, just load a MyRowHolder // what layout do you want
             public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                SentMessageBinding binding = SentMessageBinding.inflate(getLayoutInflater());
-                return new MyRowHolder(binding.getRoot());
+
+                View root;
+                if(viewType == 0){
+                    root = getLayoutInflater().inflate(R.layout.sent_message,parent,false);}
+                    else{
+                        root =  getLayoutInflater().inflate(R.layout.receive_message,parent,false);
+                }
+
+
+                //SentMessageBinding binding = SentMessageBinding.inflate(getLayoutInflater());
+                return new MyRowHolder(root);
             }
 
             @Override
+
             public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
-                String obj = messages.get(position);
-                holder.messageText.setText(obj);
-                holder.timeText.setText("");
+                ChatMessage obj = list.get(position);
+                holder.messageText.setText(obj.getMessage());
+                holder.timeText.setText(obj.getTimeSent());
+
+
             }
 
             @Override
@@ -92,10 +147,15 @@ RecyclerView.Adapter myAdapter;
                 return messages.size();
             }
 
-            public int getItemViewType(int position){
-                return 0;
+            public int getItemViewType(int position) {
+                ChatMessage obj =list.get(position);
+
+                if (obj.isSentButton= true) {
+                    return 0;
+                } else {
+                    return 1;
+                }
             }
         });
-
     }
 }
