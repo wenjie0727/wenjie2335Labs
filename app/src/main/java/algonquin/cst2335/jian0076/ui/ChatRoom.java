@@ -16,42 +16,22 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import algonquin.cst2335.jian0076.R;
+import algonquin.cst2335.jian0076.data.ChatMessage;
 import algonquin.cst2335.jian0076.data.ChatRoomViewModel;
 import algonquin.cst2335.jian0076.databinding.ActivityChatRoomBinding;
 
- class ChatMessage {
-    String message;
-    String timeSent;
-    boolean isSentButton;
 
-    public String getMessage() {
-        return message;
-    }
-
-    public String getTimeSent() {
-        return timeSent;
-    }
-
-    public boolean isSentButton() {
-        return isSentButton;
-    }
-
-    ChatMessage(String m, String t, boolean sent)
-    {
-        message = m;
-        timeSent =t;
-        isSentButton = sent;
-
-    }
-}
 
 public class ChatRoom extends AppCompatActivity {
+
     ActivityChatRoomBinding binding;
     ChatRoomViewModel chatModel;
     ArrayList<String> messages;
     ArrayList<ChatMessage> list = new ArrayList<>();
     //RecyclerView.Adapter myAdapter;
-    RecyclerView.Adapter<MyRowHolder> myAdapter;
+    RecyclerView.Adapter myAdapter;
+    ChatMessage newMsg;
+
 
 
     @Override
@@ -62,10 +42,10 @@ public class ChatRoom extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         chatModel = new ViewModelProvider(this).get(ChatRoomViewModel.class);
-        messages = chatModel.messages.getValue();
+        list = chatModel.messages.getValue();
 
-        if (messages == null) {
-            chatModel.messages.postValue(messages = new ArrayList<>());
+        if (list == null) {
+            chatModel.messages.postValue(list = new ArrayList<>());
         }
 
 
@@ -75,14 +55,11 @@ public class ChatRoom extends AppCompatActivity {
         binding.button.setOnClickListener(click -> {
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
             String currentDateandTime = sdf.format(new Date());
-
             String m = binding.textInput.getText().toString();
-            ChatMessage newMsg = new ChatMessage(m, currentDateandTime, false);
+            newMsg= new ChatMessage(m, currentDateandTime, true);
             list.add(newMsg);
-
-            // messages.add(binding.textInput.getText().toString());
             //wants to know which position has changed
-            myAdapter.notifyItemInserted(messages.size() - 1);
+            myAdapter.notifyItemInserted(list.size() - 1);
             //clear the previous text:
             binding.textInput.setText("");
 
@@ -93,18 +70,16 @@ public class ChatRoom extends AppCompatActivity {
             String currentDateandTime = sdf.format(new Date());
 
             String m = binding.textInput.getText().toString();
-            ChatMessage newMsg = new ChatMessage(m, currentDateandTime, true);
+            ChatMessage newMsg = new ChatMessage(m, currentDateandTime, false);
             list.add(newMsg);
 
-            // messages.add(binding.textInput.getText().toString());
-            myAdapter.notifyItemInserted(messages.size() - 1);
+            myAdapter.notifyItemInserted(list.size() - 1);
             //clear the previous text:
             binding.textInput.setText("");
 
         });
 
         class MyRowHolder extends RecyclerView.ViewHolder {
-            //public BreakIterator currentDateandTime;
             TextView messageText;
             TextView timeText;
 
@@ -123,7 +98,7 @@ public class ChatRoom extends AppCompatActivity {
                 View root;
                 if(viewType == 0){
                     root = getLayoutInflater().inflate(R.layout.sent_message,parent,false);}
-                    else{
+                else{
                         root =  getLayoutInflater().inflate(R.layout.receive_message,parent,false);
                 }
 
@@ -141,16 +116,15 @@ public class ChatRoom extends AppCompatActivity {
 
 
             }
-
             @Override
             public int getItemCount() {
-                return messages.size();
+                return list.size();
             }
 
             public int getItemViewType(int position) {
                 ChatMessage obj =list.get(position);
 
-                if (obj.isSentButton= true) {
+                if (obj.isSentButton()) {
                     return 0;
                 } else {
                     return 1;
