@@ -28,14 +28,12 @@ public class ChatRoom extends AppCompatActivity {
     ChatRoomViewModel chatModel;
     ArrayList<String> messages;
     ArrayList<ChatMessage> list = new ArrayList<>();
-    //RecyclerView.Adapter myAdapter;
     RecyclerView.Adapter myAdapter;
     ChatMessage newMsg;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
@@ -47,8 +45,6 @@ public class ChatRoom extends AppCompatActivity {
         if (list == null) {
             chatModel.messages.postValue(list = new ArrayList<>());
         }
-
-
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
@@ -97,13 +93,12 @@ public class ChatRoom extends AppCompatActivity {
 
                 View root;
                 if(viewType == 0){
+                    // inflate
                     root = getLayoutInflater().inflate(R.layout.sent_message,parent,false);}
                 else{
                         root =  getLayoutInflater().inflate(R.layout.receive_message,parent,false);
                 }
-
-
-                //SentMessageBinding binding = SentMessageBinding.inflate(getLayoutInflater());
+                // pass the root to constructor
                 return new MyRowHolder(root);
             }
 
@@ -111,12 +106,11 @@ public class ChatRoom extends AppCompatActivity {
 
             public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
                 ChatMessage obj = list.get(position);
+                // set the textview
                 holder.messageText.setText(obj.getMessage());
                 holder.timeText.setText(obj.getTimeSent());
-
-
             }
-            @Override
+            @Override  // how many rows are there
             public int getItemCount() {
                 return list.size();
             }
@@ -125,9 +119,9 @@ public class ChatRoom extends AppCompatActivity {
                 ChatMessage obj =list.get(position);
 
                 if (obj.isSentButton()) {
-                    return 0;
+                    return 0;  //0 represents sent, the layout is sent_message.xml
                 } else {
-                    return 1;
+                    return 1;  //1 represents receive, the layout is receive_message.xml
                 }
             }
         });
