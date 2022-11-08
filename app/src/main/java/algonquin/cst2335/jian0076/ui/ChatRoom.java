@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,9 +82,6 @@ public class ChatRoom extends AppCompatActivity {
             //clear the previous text:
             binding.textInput.setText("");
 
-//                    ChatMessage newMessage = new ChatMessage();
-//                    newMessage.setMessage(binding.textInput.getText().toString());
-
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() -> {
                 mDAO.insertMessage(newMsg);
@@ -118,6 +117,9 @@ public class ChatRoom extends AppCompatActivity {
             public MyRowHolder(@NonNull View itemView) {
                 super(itemView);
                 itemView.setOnClickListener(click -> {
+
+
+
                     //which row was click
                     int position = getAbsoluteAdapterPosition();
                     ChatMessage thisMessage = list.get(position);
@@ -125,14 +127,22 @@ public class ChatRoom extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ChatRoom.this);
 
                     builder.setMessage("Do you want to delete the message:" + messageText.getText());
-                    //builder.setMessage(newMsg.message);
                     builder.setTitle("Question:");
 
                     builder.setNegativeButton("No", (a, b) -> {});
                     builder.setPositiveButton("Yes", (a, b) -> {
+
+                        Snackbar.make(messageText,"You deleted message #" + position, Snackbar.LENGTH_LONG)
+                                        .setAction("Undo", clk ->{
+                                            Executor thread = Executors.newSingleThreadExecutor();
+                                            thread.execute(() -> {
+                                                        mDAO.insertMessage(thisMessage);});
+                                                        myAdapter.notifyItemInserted(position);
+                                                        chatModel.messages.getValue().add(thisMessage);
+                                                    }).show();
                         Executor thread = Executors.newSingleThreadExecutor();
                         thread.execute(() -> {
-                            mDAO.deleteMessge(newMsg);
+                            mDAO.deleteMessge(thisMessage);
 
                         });
                         myAdapter.notifyItemRemoved(position);
@@ -141,6 +151,7 @@ public class ChatRoom extends AppCompatActivity {
                     });
                     builder.create().show();
                 });
+
                messageText = itemView.findViewById(R.id.messageText);
               timeText = itemView.findViewById(R.id.timeText);
             }
