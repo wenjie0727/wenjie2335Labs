@@ -10,14 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import algonquin.cst2335.jian0076.R;
 import algonquin.cst2335.jian0076.data.ChatMessage;
 import algonquin.cst2335.jian0076.data.ChatRoomViewModel;
+import algonquin.cst2335.jian0076.data.MessageDatabase;
 import algonquin.cst2335.jian0076.databinding.ActivityChatRoomBinding;
 
 
@@ -30,11 +34,16 @@ public class ChatRoom extends AppCompatActivity {
     ArrayList<ChatMessage> list = new ArrayList<>();
     RecyclerView.Adapter myAdapter;
     ChatMessage newMsg;
+    ChatMessageDAO mDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+//load from database
+        MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "MessageDatabase").build();
+        mDAO = db.cmDAO();
+
 
         binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -44,22 +53,45 @@ public class ChatRoom extends AppCompatActivity {
 
         if (list == null) {
             chatModel.messages.postValue(list = new ArrayList<>());
+
+            Executor thread = Executors.newSingleThreadExecutor();
+            //list.addAll(mDAO.getAllMessages());
+            thread.execute(() ->
+            {
+                list.addAll( mDAO.getAllMessages() ); //Once you get the data from database
+
+                runOnUiThread( () ->  binding.recyclerView.setAdapter( myAdapter )); //You can then load the RecyclerView
+            });
         }
+
+
+
+
+
+
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
         binding.button.setOnClickListener(click -> {
-            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
-            String currentDateandTime = sdf.format(new Date());
-            String m = binding.textInput.getText().toString();
-            newMsg= new ChatMessage(m, currentDateandTime, true);
-            list.add(newMsg);
-            //wants to know which position has changed
-            myAdapter.notifyItemInserted(list.size() - 1);
-            //clear the previous text:
-            binding.textInput.setText("");
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
+                    String currentDateandTime = sdf.format(new Date());
+                    String m = binding.textInput.getText().toString();
+                    newMsg = new ChatMessage(m, currentDateandTime, true);
+                    list.add(newMsg);
+                    //wants to know which position has changed
+                    myAdapter.notifyItemInserted(list.size() - 1);
+                    //clear the previous text:
+                    binding.textInput.setText("");
 
-        });
+//                    ChatMessage newMessage = new ChatMessage();
+//                    newMessage.setMessage(binding.textInput.getText().toString());
+
+                    Executor thread = Executors.newSingleThreadExecutor();
+                    thread.execute(() -> {
+                        mDAO.insertMessage(newMsg);
+
+                    });
+                });
 
         binding.button1.setOnClickListener(click -> {
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
@@ -73,6 +105,11 @@ public class ChatRoom extends AppCompatActivity {
             //clear the previous text:
             binding.textInput.setText("");
 
+            Executor thread = Executors.newSingleThreadExecutor();
+            thread.execute(() -> {
+                mDAO.insertMessage(newMsg);
+
+            });
         });
 
         class MyRowHolder extends RecyclerView.ViewHolder {
