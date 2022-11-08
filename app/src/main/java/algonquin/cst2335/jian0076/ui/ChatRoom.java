@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -118,6 +119,31 @@ public class ChatRoom extends AppCompatActivity {
 
             public MyRowHolder(@NonNull View itemView) {
                 super(itemView);
+                itemView.setOnClickListener(click -> {
+                            //which row was click
+                            int position = getAbsoluteAdapterPosition();
+                            ChatMessage thisMessage = list.get(position);
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(ChatRoom.this);
+                            builder.setMessage("DO you want to delete the message:" + messageText.getText());
+                            builder.setTitle("Question:");
+
+                            builder.setNegativeButton("No", (a, b) -> {
+                            });
+                    builder.setPositiveButton("Yes", (a, b) -> {
+
+
+                            Executor thread = Executors.newSingleThreadExecutor();
+                            thread.execute(() -> {
+                                mDAO.deleteMessge(newMsg);
+
+                            });
+                            myAdapter.notifyItemRemoved(position);
+                            chatModel.messages.getValue().remove(position);
+
+                    });
+                    builder.create().show();
+                });
                 messageText = itemView.findViewById(R.id.messageText);
                 timeText = itemView.findViewById(R.id.timeText);
             }
