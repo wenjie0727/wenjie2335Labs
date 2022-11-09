@@ -33,7 +33,6 @@ public class ChatRoom extends AppCompatActivity {
 
     ActivityChatRoomBinding binding;
     ChatRoomViewModel chatModel;
-    ArrayList<String> messages;
     ArrayList<ChatMessage> list = new ArrayList<>();
     RecyclerView.Adapter myAdapter;
     ChatMessage newMsg;
@@ -111,8 +110,6 @@ public class ChatRoom extends AppCompatActivity {
         class MyRowHolder extends RecyclerView.ViewHolder {
             TextView messageText;
             TextView timeText;
-//            messageText = itemView.findViewById(R.id.messageText);
-//            timeText = itemView.findViewById(R.id.timeText);
 
             public MyRowHolder(@NonNull View itemView) {
                 super(itemView);
