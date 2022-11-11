@@ -139,7 +139,7 @@ public class ChatRoom extends AppCompatActivity {
                                                     }).show();
                         Executor thread = Executors.newSingleThreadExecutor();
                         thread.execute(() -> {
-                            mDAO.deleteMessge(thisMessage);
+                            mDAO.deleteMessage(thisMessage);
 
                         });
                         myAdapter.notifyItemRemoved(position);

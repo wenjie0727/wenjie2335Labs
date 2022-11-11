@@ -35,7 +35,7 @@ public class ChatMessage {
     }
 
 
-public ChatMessage(){};
+    public ChatMessage(){};
     public ChatMessage(String m, String t, boolean sent)
     {
         message = m;

@@ -9,16 +9,17 @@ import java.util.List;
 
 import algonquin.cst2335.jian0076.data.ChatMessage;
 
-//object that performs CRUD operation
+  //object that performs CRUD operation
 @Dao
 public interface ChatMessageDAO {
 
     @Insert
    void insertMessage(ChatMessage m);
-//this matches the @Entity class name
+  //this matches the @Entity class name
     @Query("Select * from ChatMessage")
+
     List<ChatMessage> getAllMessages();
 
     @Delete
-     void deleteMessge(ChatMessage m);
+     void deleteMessage(ChatMessage m);
 }
