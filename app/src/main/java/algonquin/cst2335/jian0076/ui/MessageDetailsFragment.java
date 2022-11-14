@@ -29,9 +29,10 @@ public class MessageDetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
          binding = DetailsLayoutBinding.inflate(inflater);
-        binding.textView.setText(selected.message);
-        binding.timeView.setText(selected.timeSent);
-        binding.idView.setText(selected.id);
+        binding.textView.setText(selected.getMessage());
+        binding.timeView.setText(selected.getTimeSent());
+       // binding.sendView.setEnabled(selected.isSentButton);
+       // binding.idView.setText(selected.getId());
         return binding.getRoot();
   //View inflated = inflater.inflate(R.layout.details_layout,container,false);
        //return inflated;

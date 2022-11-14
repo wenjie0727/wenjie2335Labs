@@ -41,7 +41,7 @@ public class ChatRoom extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        chatModel = new ViewModelProvider(this).get(ChatRoomViewModel.class);
  //user select a chatmessage object from the list
         chatModel.selectedMessage.observe(this,(newMessageValue)->{
             //load the fragment
@@ -51,7 +51,7 @@ public class ChatRoom extends AppCompatActivity {
             MessageDetailsFragment theFragment = new MessageDetailsFragment(newMessageValue);
 
                    // where               //what goes here
-            tx.add(R.id.fragment_location,theFragment);
+            tx.replace(R.id.fragment_location,theFragment);
             tx.commit(); // this line actually load the fragment to the specified Fragment layout
 
                 }
