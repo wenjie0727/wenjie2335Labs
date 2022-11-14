@@ -46,6 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
     <FrameLayout
+        android:id="@+id/fragment_location"
         android:background="@color/my_text"
         android:layout_width="0dp"
         android:layout_height="0dp"

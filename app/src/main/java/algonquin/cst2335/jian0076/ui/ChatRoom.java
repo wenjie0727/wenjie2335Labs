@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +44,15 @@ public class ChatRoom extends AppCompatActivity {
 
  //user select a chatmessage object from the list
         chatModel.selectedMessage.observe(this,(newMessageValue)->{
+            //load the fragment
+
+            FragmentManager fMgr = getSupportFragmentManager();
+            FragmentTransaction tx = fMgr.beginTransaction();
+            MessageDetailsFragment theFragment = new MessageDetailsFragment(newMessageValue);
+
+                   // where               //what goes here
+            tx.add(R.id.fragment_location,theFragment);
+            tx.commit(); // this line actually load the fragment to the specified Fragment layout
 
                 }
         );
