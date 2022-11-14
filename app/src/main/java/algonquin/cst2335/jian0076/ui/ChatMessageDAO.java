@@ -14,7 +14,7 @@ import algonquin.cst2335.jian0076.data.ChatMessage;
 public interface ChatMessageDAO {
 
     @Insert
-   void insertMessage(ChatMessage m);
+    long insertMessage(ChatMessage m);
   //this matches the @Entity class name
     @Query("Select * from ChatMessage")
 

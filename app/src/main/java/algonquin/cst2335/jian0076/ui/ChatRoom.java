@@ -83,7 +83,7 @@ public class ChatRoom extends AppCompatActivity {
 
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() -> {
-                mDAO.insertMessage(newMsg);
+               newMsg.id=(int) mDAO.insertMessage(newMsg);
 
             });
         });
