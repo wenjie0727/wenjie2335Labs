@@ -6,14 +6,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,6 +39,12 @@ public class ChatRoom extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+ //user select a chatmessage object from the list
+        chatModel.selectedMessage.observe(this,(newMessageValue)->{
+
+                }
+        );
 //load from database
         MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "MessageDatabase").build();
         mDAO = db.cmDAO();
@@ -114,10 +117,14 @@ public class ChatRoom extends AppCompatActivity {
             public MyRowHolder(@NonNull View itemView) {
                 super(itemView);
                 itemView.setOnClickListener(click -> {
+                    int position = getAbsoluteAdapterPosition();
+                    ChatMessage selected = list.get(position);
 
+                    chatModel.selectedMessage.postValue(selected);
 
 
                     //which row was click
+                    /*
                     int position = getAbsoluteAdapterPosition();
                     ChatMessage thisMessage = list.get(position);
 
@@ -146,7 +153,7 @@ public class ChatRoom extends AppCompatActivity {
                         chatModel.messages.getValue().remove(position);
 
                     });
-                    builder.create().show();
+                    builder.create().show();*/
                 });
 
                messageText = itemView.findViewById(R.id.messageText);
