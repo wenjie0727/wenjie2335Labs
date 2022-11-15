@@ -31,8 +31,13 @@ public class MessageDetailsFragment extends Fragment {
          binding = DetailsLayoutBinding.inflate(inflater);
         binding.textView.setText(selected.getMessage());
         binding.timeView.setText(selected.getTimeSent());
-       // binding.sendView.setEnabled(selected.isSentButton);
-       // binding.idView.setText(selected.getId());
+      if (selected.isSentButton){
+          binding.sendView.setText("This is a send message");
+      }else{
+          binding.sendView.setText("This is a receive message");
+      }
+        binding.idView.setText("DatabaseID is" + selected.id);
+        binding.getRoot().setClickable(true);
         return binding.getRoot();
   //View inflated = inflater.inflate(R.layout.details_layout,container,false);
        //return inflated;

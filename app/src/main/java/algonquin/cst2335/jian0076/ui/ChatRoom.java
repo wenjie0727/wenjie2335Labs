@@ -52,6 +52,7 @@ public class ChatRoom extends AppCompatActivity {
 
                    // where               //what goes here
             tx.replace(R.id.fragment_location,theFragment);
+            tx.addToBackStack("go back");
             tx.commit(); // this line actually load the fragment to the specified Fragment layout
 
                 }
