@@ -1,12 +1,16 @@
 package algonquin.cst2335.jian0076.ui;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -36,6 +40,32 @@ public class ChatRoom extends AppCompatActivity {
     RecyclerView.Adapter myAdapter;
     ChatMessage newMsg;
     ChatMessageDAO mDAO;
+
+    @Override
+    public void setSupportActionBar(@Nullable Toolbar toolbar) {
+
+        super.setSupportActionBar(binding.myToolbar);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {case R.id.item_1:
+
+
+            case R.id.item_2:
+    }
+
+    return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
