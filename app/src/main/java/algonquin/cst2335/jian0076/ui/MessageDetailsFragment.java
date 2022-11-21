@@ -28,6 +28,7 @@ public class MessageDetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
+
          binding = DetailsLayoutBinding.inflate(inflater);
         binding.textView.setText(selected.getMessage());
         binding.timeView.setText(selected.getTimeSent());

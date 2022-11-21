@@ -6,17 +6,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
+
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,50 +42,56 @@ public class ChatRoom extends AppCompatActivity {
     RecyclerView.Adapter myAdapter;
     ChatMessage newMsg;
     ChatMessageDAO mDAO;
-
-    @Override
-    public void setSupportActionBar(@Nullable Toolbar toolbar) {
-
-        super.setSupportActionBar(binding.myToolbar);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.my_menu, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         switch (item.getItemId())
         {case R.id.item_1:
-
-
+            Toast.makeText(this,"You clicked on the delete pail",Toast.LENGTH_LONG).show();
             case R.id.item_2:
+                Snackbar.make(binding.myToolbar,"Version 1.0,created by wenjie Jiang", BaseTransientBottomBar.LENGTH_LONG).show();
+        }
+
+        return true;
     }
 
-    return true;
-    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+
+        binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        setSupportActionBar(binding.myToolbar);
+
+
         chatModel = new ViewModelProvider(this).get(ChatRoomViewModel.class);
- //user select a chatmessage object from the list
+
+        //user select a chatmessage object from the list
         chatModel.selectedMessage.observe(this,(newMessageValue)->{
-            //load the fragment
+                    //load the fragment
 
-            FragmentManager fMgr = getSupportFragmentManager();
-            FragmentTransaction tx = fMgr.beginTransaction();
-            MessageDetailsFragment theFragment = new MessageDetailsFragment(newMessageValue);
+                    FragmentManager fMgr = getSupportFragmentManager();
+                    FragmentTransaction tx = fMgr.beginTransaction();
+                    MessageDetailsFragment theFragment = new MessageDetailsFragment(newMessageValue);
 
-                   // where               //what goes here
-            tx.replace(R.id.fragment_location,theFragment);
-            tx.addToBackStack("go back");
-            tx.commit(); // this line actually load the fragment to the specified Fragment layout
+                    // where               //what goes here
+                    tx.replace(R.id.fragment_location,theFragment);
+                    tx.addToBackStack("go back");
+                    tx.commit(); // this line actually load the fragment to the specified Fragment layout
 
                 }
         );
@@ -128,7 +136,7 @@ public class ChatRoom extends AppCompatActivity {
 
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() -> {
-               newMsg.id=(int) mDAO.insertMessage(newMsg);
+                newMsg.id=(int) mDAO.insertMessage(newMsg);
 
             });
         });
@@ -151,6 +159,7 @@ public class ChatRoom extends AppCompatActivity {
 
             });
         });
+
 
         class MyRowHolder extends RecyclerView.ViewHolder {
             TextView messageText;
@@ -198,8 +207,8 @@ public class ChatRoom extends AppCompatActivity {
                     builder.create().show();*/
                 });
 
-               messageText = itemView.findViewById(R.id.messageText);
-              timeText = itemView.findViewById(R.id.timeText);
+                messageText = itemView.findViewById(R.id.messageText);
+                timeText = itemView.findViewById(R.id.timeText);
             }
         }
 
@@ -214,11 +223,12 @@ public class ChatRoom extends AppCompatActivity {
                     // inflate
                     root = getLayoutInflater().inflate(R.layout.sent_message,parent,false);}
                 else{
-                        root =  getLayoutInflater().inflate(R.layout.receive_message,parent,false);
+                    root =  getLayoutInflater().inflate(R.layout.receive_message,parent,false);
                 }
                 // pass the root to constructor
                 return new MyRowHolder(root);
             }
+
 
             @Override
 

@@ -6,14 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.ChatRoom">
 
-    <androidx.appcompat.widget.Toolbar
-        android:background="@color/my_primary"
-        android:id="@+id/myToolbar"
-        android:layout_width="400dp"
-        android:layout_height="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </androidx.appcompat.widget.Toolbar>
+   <androidx.appcompat.widget.Toolbar
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/myToolbar"
+       tools:ignore="MissingConstraints">
+   </androidx.appcompat.widget.Toolbar>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
