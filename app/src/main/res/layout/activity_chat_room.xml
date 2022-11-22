@@ -17,19 +17,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.ChatRoom">
-
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/myToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/my_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="50dp"
         app:layout_constraintBottom_toTopOf="@+id/textInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/myToolbar" />
 
     <EditText
         android:id="@+id/textInput"
@@ -60,14 +66,6 @@
         app:layout_constraintStart_toEndOf="@+id/textInput"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/myToolbar"
-        android:background="@color/my_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-        app:layout_constraintEnd_toEndOf="parent">
-    </androidx.appcompat.widget.Toolbar>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

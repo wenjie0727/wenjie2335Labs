@@ -100,8 +100,6 @@ public class ChatRoom extends AppCompatActivity {
         mDAO = db.cmDAO();
 
 
-        binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
         chatModel = new ViewModelProvider(this).get(ChatRoomViewModel.class);
         list = chatModel.messages.getValue();
