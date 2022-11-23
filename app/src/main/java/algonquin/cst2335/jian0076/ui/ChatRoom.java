@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -42,6 +43,7 @@ public class ChatRoom extends AppCompatActivity {
     RecyclerView.Adapter myAdapter;
     ChatMessage newMsg;
     ChatMessageDAO mDAO;
+    int position;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -56,6 +58,34 @@ public class ChatRoom extends AppCompatActivity {
 
         switch (item.getItemId())
         {case R.id.item_1:
+            ChatMessage selected= chatModel.selectedMessage.getValue();
+            AlertDialog.Builder builder = new AlertDialog.Builder(ChatRoom.this);
+            builder.setMessage("Do you want to delete the message:" + selected.getMessage());
+            builder.setTitle("Question:");
+
+            builder.setNegativeButton("No", (a, b) -> {});
+            builder.setPositiveButton("Yes", (a, b) -> {
+
+                Snackbar.make(binding.getRoot(),"You deleted message #" + position, Snackbar.LENGTH_LONG)
+                        .setAction("Undo", clk ->{
+                            Executor thread = Executors.newSingleThreadExecutor();
+                            thread.execute(() -> {
+                                mDAO.insertMessage(selected);});
+                            myAdapter.notifyItemInserted(position);
+                            chatModel.messages.getValue().add(selected);
+                        }).show();
+                Executor thread = Executors.newSingleThreadExecutor();
+                thread.execute(() -> {
+                    mDAO.deleteMessage(selected);
+                    chatModel.messages.getValue().remove(position);
+                    runOnUiThread(() ->{
+                        myAdapter.notifyItemRemoved(position);
+                        this.onBackPressed();
+                    });
+                });
+
+            });
+            builder.create().show();
             Toast.makeText(this,"You clicked on the delete pail",Toast.LENGTH_LONG).show();
             case R.id.item_2:
                 Snackbar.make(binding.myToolbar,"Version 1.0,created by wenjie Jiang", BaseTransientBottomBar.LENGTH_LONG).show();
@@ -166,7 +196,7 @@ public class ChatRoom extends AppCompatActivity {
             public MyRowHolder(@NonNull View itemView) {
                 super(itemView);
                 itemView.setOnClickListener(click -> {
-                    int position = getAbsoluteAdapterPosition();
+                    position = getAbsoluteAdapterPosition();
                     ChatMessage selected = list.get(position);
 
                     chatModel.selectedMessage.postValue(selected);
