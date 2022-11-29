@@ -1,8 +1,11 @@
 package algonquin.cst2335.jian0076;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
    protected String cityName;
     RequestQueue queue = null;
+    Bitmap image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,32 +70,63 @@ public class MainActivity extends AppCompatActivity {
                             String iconName = first.getString("icon");
                         String pathname = getFilesDir()+"/" + iconName +".png";
                         File file = new File(pathname);
+
+
+
                         if(file.exists()){
                             image = BitmapFactory.decodeFile(pathname);
                         }
                         else{
-                            ImageRequest imgReq = new ImageRequest(imageUrl, new Response.Listener>Bitmap () {
+                            ImageRequest imgReq = new ImageRequest("https://openweathermap.org/img/w/" + iconName + ".png", new Response.Listener<Bitmap> () {
                                 @Override
                                 public void onResponse(Bitmap bitmap) {
                                     // Do something with loaded bitmap...
+                                    try {
 
+                                        image = bitmap;
+                                        image.compress(Bitmap.CompressFormat.PNG, 100, MainActivity.this.openFileOutput(iconName + ".png", Activity.MODE_PRIVATE));
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }, 1024, 1024, iconName.ScaleType.CENTER, null, (error ) -> {
+                            }, 1024, 1024, ImageView.ScaleType.CENTER, null, (error) -> {
 
                             });
+                            queue.add(imgReq);
                         }
+                            runOnUiThread( (  )  -> {
+                                binding.temp.setText("The current temperature is " + temp);
+                                binding.temp.setVisibility(View.VISIBLE);
 
+                                binding.minTemp.setText("The min temperature is " + min);
+                                binding.minTemp.setVisibility(View.VISIBLE);
 
-                        } catch (JSONException e) {
+                                binding.maxTemp.setText("The max temperature is " + max);
+                                binding.maxTemp.setVisibility(View.VISIBLE);
+
+                                binding.humidity.setText("The humidity is " + humidity);
+                                binding.humidity.setVisibility(View.VISIBLE);
+
+                                binding.description.setText("The description is " + description);
+                                binding.description.setVisibility(View.VISIBLE);});
+
+                            binding.icon.setImageBitmap(image);
+                            binding.icon.setVisibility(View.VISIBLE);
+
+                        }catch (JSONException e){
                             e.printStackTrace();
                         }
                     },
-                    (error)->{
-
-                    });
+                    (error) -> { });
             queue.add(request);
+
         });
 
+    }
 
-    }}
+
+
+
+}
 
